@@ -38,6 +38,14 @@ def pick(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    i, index = 0, 0
+    while i < len(paragraphs):
+        if select(paragraphs[i]):
+            if index == k:
+                return paragraphs[i]
+            index += 1
+        i += 1
+    return ''
     # END PROBLEM 1
 
 
