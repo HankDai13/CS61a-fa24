@@ -66,6 +66,11 @@ def about(subject):
 
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    def if_contain(paragraph):
+        paragraph_lower = remove_punctuation(lower(paragraph))
+        paragraph_splits = split(paragraph_lower)
+        return any(word in subject for word in paragraph_splits)
+    return if_contain
     # END PROBLEM 2
 
 
