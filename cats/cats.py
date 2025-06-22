@@ -325,6 +325,15 @@ def report_progress(typed, source, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    count = 0
+    for typed_word, source_word in zip(typed, source):
+        if typed_word == source_word:
+            count += 1
+        else:
+            break
+    ratio = count / len(source)
+    upload({'id': user_id, 'progress': ratio})
+    return ratio
     # END PROBLEM 8
 
 
@@ -348,7 +357,14 @@ def time_per_word(words, timestamps_per_player):
     """
     tpp = timestamps_per_player  # A shorter name (for convenience)
     # BEGIN PROBLEM 9
-    times = []  # You may remove this line
+    times = []
+    for player_timestamps in tpp:
+        player_times = []
+        for i in range(1, len(player_timestamps)):
+            word_time = player_timestamps[i] - player_timestamps[i-1]
+            player_times.append(word_time)
+        times.append(player_times)
+
     # END PROBLEM 9
     return {'words': words, 'times': times}
 
@@ -376,6 +392,16 @@ def fastest_words(words_and_times):
     word_indices = range(len(words))    # contains an *index* for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    fastest_words_list = []
+    for i in range(len(times)):
+        fastest_words_player = []
+        for j in range(len(times[i])):
+            # 找到第j个单词用时最短的玩家索引（索引小的优先）
+            fastest_player = min(range(len(times)), key=lambda player: times[player][j])
+            if i == fastest_player:
+                fastest_words_player.append(words[j])
+        fastest_words_list.append(fastest_words_player)
+    return fastest_words_list
     # END PROBLEM 10
 
 
