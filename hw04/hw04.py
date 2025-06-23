@@ -13,7 +13,12 @@ def shuffle(s):
     """
     assert len(s) % 2 == 0, 'len(seq) must be even'
     "*** YOUR CODE HERE ***"
-
+    half = len(s) // 2
+    shuffle = []
+    for i in range(half):
+        shuffle.append(s[i])
+        shuffle.append(s[half + i])
+    return shuffle
 
 def deep_map(f, s):
     """Replace all non-list elements x with f(x) in the nested list s.
@@ -38,7 +43,11 @@ def deep_map(f, s):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    for i in range(len(s)):
+        if type(s[i]) == list:
+            deep_map(f, s[i])
+        else:
+            s[i] = f(s[i])
 
 HW_SOURCE_FILE=__file__
 
@@ -47,11 +56,13 @@ def planet(mass):
     """Construct a planet of some mass."""
     assert mass > 0
     "*** YOUR CODE HERE ***"
+    return ['planet', mass]
 
 def mass(p):
     """Select the mass of a planet."""
     assert is_planet(p), 'must call mass on a planet'
     "*** YOUR CODE HERE ***"
+    return p[1]
 
 def is_planet(p):
     """Whether p is a planet."""
@@ -103,7 +114,22 @@ def balanced(m):
     >>> check(HW_SOURCE_FILE, 'balanced', ['Index'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    # 首先检查当前移动设备的力矩是否平衡
+    if total_mass(end(left(m))) * length(left(m)) != total_mass(end(right(m))) * length(right(m)):
+        return False
+    
+    # 然后递归检查左臂和右臂（如果它们是移动设备）
+    left_balanced = True
+    right_balanced = True
+    
+    if is_mobile(end(left(m))):
+        left_balanced = balanced(end(left(m)))
+    
+    if is_mobile(end(right(m))):
+        right_balanced = balanced(end(right(m)))
+    
+    return left_balanced and right_balanced
+
 
 
 def berry_finder(t):
@@ -124,7 +150,12 @@ def berry_finder(t):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    if label(t) == 'berry':
+        return True
+    for branch in branches(t):
+        if berry_finder(branch):
+            return True
+    return False
 
 HW_SOURCE_FILE=__file__
 
@@ -139,6 +170,12 @@ def max_path_sum(t):
     17
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return label(t)
+    else:
+        sums = [max_path_sum(branch) for branch in branches(t)]
+        max_sum = max(sums)
+        return label(t) + max_sum
 
 
 def mobile(left, right):
